@@ -2,6 +2,7 @@ var fs = require('fs');
 var gulp = require('gulp');
 var karma = require('karma').server;
 var concat = require('gulp-concat');
+var sourcemaps = require('gulp-sourcemaps');
 var jshint = require('gulp-jshint');
 var header = require('gulp-header');
 var footer = require('gulp-footer');
@@ -72,8 +73,10 @@ gulp.task('scripts', ['clean'], function() {
       timestamp: (new Date()).toISOString(), pkg: config.pkg
     }))
     .pipe(gulp.dest('dist'))
+    .pipe(sourcemaps.init())
     .pipe(uglify({preserveComments: 'some'}))
     .pipe(rename({ext:'.min.js'}))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('dist'));
 
 });
@@ -86,8 +89,10 @@ gulp.task('styles', ['clean'], function() {
     }))
     .pipe(rename('select.css'))
     .pipe(gulp.dest('dist'))
+    .pipe(sourcemaps.init())
     .pipe(minifyCSS())
     .pipe(rename({ext:'.min.css'}))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('dist'));
 
 });
